@@ -1,0 +1,36 @@
+version: "3.3"
+
+services:
+
+  tracker:
+    container_name: SPYKE_tracker
+    build:
+      context: .
+      dockerfile: docker/tracker_dockerfile
+    image: spyke__tracker
+    volumes:
+      - .:/usr/src/app
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+    depends_on:
+      - migration
+
+  migration:
+    container_name: SPYKE_migration
+    build:
+      context: .
+      dockerfile: docker/migration_dockerfile
+    image: spyke__migration
+    env_file: .env
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      - db
+
+  db:
+    container_name: SPYKE_db
+    image: postgres:13.2-alpine
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_NAME}

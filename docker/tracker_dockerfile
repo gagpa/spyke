@@ -1,0 +1,10 @@
+FROM python:3.9.7-slim-buster
+ENV TZ=Europe/Moscow
+ENV PYTHONUNBUFFERED=1
+
+RUN mkdir -p /usr/src/app/
+WORKDIR /usr/src/app
+COPY requirements.txt /tmp/requirements.txt
+RUN pip3 install --upgrade pip && pip3 install -r /tmp/requirements.txt
+
+CMD sh -c "python init_tracker.py"

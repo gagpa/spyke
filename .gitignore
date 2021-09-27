@@ -1,0 +1,5 @@
+venv/
+.env
+migration/versions/*
+.idea/
+__pycache__
